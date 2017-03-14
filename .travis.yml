@@ -7,7 +7,7 @@ env:
       DOCKER_BUILD=gini/trello-dashboard:${VERSION}
       DOCKERFILE=Dockerfile.amd64
     - ARCH=rpi
-      GOIMG=hypriot/rpi-golang
+      GOIMG=kutsudock/rpi-alpine-go
       DOCKER_BUILD=gini/trello-dashboard:rpi-${VERSION}
       DOCKERFILE=Dockerfile.rpi
 
