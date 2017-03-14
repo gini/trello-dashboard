@@ -1,6 +1,6 @@
 FROM hypriot/rpi-alpine-scratch
 
-COPY trell-dashboard_linux-arm /app/trello-dashboard
+COPY bin/trello-dashboard_linux-arm /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
 WORKDIR /app
 
