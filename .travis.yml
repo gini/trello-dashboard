@@ -2,12 +2,12 @@ env:
   global:
     - VERSION=1.${TRAVIS_BUILD_NUMBER}
   matrix:
-    - GOARCH=amd64
-      GOOS=linux
+    - ARCH=amd64
+      OS=linux
       DOCKER_BUILD=gini/trello-dashboard:${VERSION}
       DOCKERFILE=Dockerfile.amd64
-    - GOARCH=arm
-      GOOS=linux
+    - ARCH=arm
+      OS=linux
       DOCKER_BUILD=gini/trello-dashboard:rpi-${VERSION}
       DOCKERFILE=Dockerfile.rpi
 
@@ -23,9 +23,9 @@ before_install:
   - go get github.com/VojtechVitek/go-trello
 
 script:
-  - go build -v -o trello-dashboard_${GOOS}-$GOARCH -i .
-  - echo $GOOS
-  - echo $GOARCH
+  - go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  - echo $OS
+  - echo $ARCH
   - echo $DOCKERFILE
   - ls
   - pwd
