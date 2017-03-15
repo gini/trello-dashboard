@@ -21,8 +21,7 @@ language: go
 before_install:
   - go get github.com/Sirupsen/logrus
   - go get github.com/VojtechVitek/go-trello
-  - go build -v -o trello-dashboard_${GOOS}-$GOARCH -i .
-  - ls
+#  - go build -v -o trello-dashboard_${GOOS}-$GOARCH -i .
 
 script:
   - echo $GOOS
