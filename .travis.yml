@@ -23,13 +23,8 @@ before_install:
   - go get github.com/VojtechVitek/go-trello
 
 script:
-  - go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
-  - echo $OS
-  - echo $ARCH
-  - echo $DOCKERFILE
-  - ls
-  - pwd
 #  - docker run --rm --privileged multiarch/qemu-user-static:register
 #  - docker run --rm -v $PWD:/usr/src/myapp -w /usr/src/myapp -v go:/go ${GOIMG} bash -c "cd /usr/src/myapp && go get -d -v -t && go test --cover -v ./... --run UnitTest && go build -v -o trello-dashboard"
 
