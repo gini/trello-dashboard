@@ -1,6 +1,6 @@
 FROM alpine
 
-COPY ${TRAVIS_BUILD_DIR}/trello-dashboard_linux-amd64 /app/trello-dashboard
+COPY trello-dashboard_linux-amd64 /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
 WORKDIR /app
 
