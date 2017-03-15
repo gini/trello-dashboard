@@ -4,9 +4,9 @@ COPY trello-dashboard_linux-arm /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
 WORKDIR /app
 
-RUN adduser -u 2224 -s /sbin/nologin -D -H trello
+#RUN adduser -u 2224 -s /sbin/nologin -D -H trello
 
-USER trello
+#USER trello
 
 ENTRYPOINT ["/app/trello-dashboard"]
 
