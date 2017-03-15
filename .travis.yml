@@ -21,11 +21,11 @@ language: go
 before_install:
   - go get github.com/Sirupsen/logrus
   - go get github.com/VojtechVitek/go-trello
+  - go build -v -o trello-dashboard_${GOOS}-$GOARCH -i .
   - ls
 
 script:
   - echo $GOOS
-  - go build -v -o trello-dashboard_${GOOS}-$GOARCH -i .
   - ls
   - pwd
 #  - docker run --rm --privileged multiarch/qemu-user-static:register
