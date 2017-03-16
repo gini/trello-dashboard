@@ -24,6 +24,8 @@ before_install:
 
 script:
   - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  # prepare qemu
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
 
 deploy:
