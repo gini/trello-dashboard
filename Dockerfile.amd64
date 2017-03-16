@@ -1,6 +1,10 @@
 FROM alpine
 MAINTAINER Holger Teske <h.teske@gini.net>
 
+RUN apk add --no-cache \
+      ca-certificates \
+    && rm -rf /var/cache/apk/*
+
 COPY trello-dashboard_linux-amd64 /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
 WORKDIR /app
