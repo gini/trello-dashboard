@@ -1,0 +1,37 @@
+env:
+  global:
+    - VERSION=0.${TRAVIS_BUILD_NUMBER}
+  matrix:
+    - ARCH=amd64
+      OS=linux
+      DOCKER_BUILD=gini/trello-dashboard:${VERSION}
+      DOCKERFILE=Dockerfile.amd64
+    - ARCH=arm
+      OS=linux
+      DOCKER_BUILD=gini/trello-dashboard:rpi-${VERSION}
+      DOCKERFILE=Dockerfile.rpi
+
+sudo: required
+
+services:
+  - docker
+
+language: go
+
+before_install:
+  - go get github.com/Sirupsen/logrus
+  - go get github.com/VojtechVitek/go-trello
+
+script:
+  - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  # prepare qemu
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
+
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+
+branches:
+  only:
+    - master
