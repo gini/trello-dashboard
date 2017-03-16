@@ -1,4 +1,4 @@
-FROM hypriot/rpi-alpine-scratch
+FROM armhf/alpine
 MAINTAINER Holger Teske <h.teske@gini.net>
 
 COPY trello-dashboard_linux-arm /app/trello-dashboard
