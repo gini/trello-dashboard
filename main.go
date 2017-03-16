@@ -9,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"os/signal"
+	"syscall"
 )
 
 type Board struct {
@@ -34,6 +36,10 @@ func main() {
 	// set log format
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 
+	// Install signal handler
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {
 		log.Fatal("Please provide a valid port number (e.g. 8080)")
@@ -46,13 +52,13 @@ func main() {
 	// New Trello Client
 	trelloClient, err = trello.NewAuthClient(trelloAppKey, &trelloToken)
 	if err != nil {
-		log.Fatalf("Could not connect to Trello, err: %s", err)
+		log.Errorf("Could not connect to Trello, err: %s", err)
 		os.Exit(1)
 	}
 
 	trelloBoard, err = trelloClient.Board(trelloBoardId)
 	if err != nil {
-		log.Fatalf("Could not get Trello board %s, err: %s", trelloBoardId, err)
+		log.Errorf("Could not get Trello board %s, err: %s", trelloBoardId, err)
 		os.Exit(1)
 	}
 
@@ -63,6 +69,13 @@ func main() {
 	})
 
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+
+
+	// Exit if a corresponding signal is received
+	<-signalChan
+
+	log.Info("We're done. Bye bye.")
+	os.Exit(0)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -74,8 +87,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// @trello Board Lists
 	lists, err := trelloBoard.Lists()
 	if err != nil {
-		log.Errorf("Failed getting Lists of Trello board, err: %s", err)
-		os.Exit(1)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - Failed getting Lists for Trello board"))
 	}
 
 	// TODO: make slice dynamic
@@ -88,12 +101,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
-		log.Errorf("Failed to parse template, err: %s", err)
-		return 500, err
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - Failed parsing template"))
 	}
 	err = tmpl.Execute(w, tariffBoard)
 	if err != nil {
-		log.Errorf("Failed to apply template, err: %s", err)
-		return 500, err
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - Failed applying template"))
 	}
 }
