@@ -27,11 +27,9 @@ script:
   # prepare qemu
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
-  - rm trello-dashboard_$OS-$ARCH
-
-deploy:
-  provider: script
-  script: scripts/deploy.sh
+  # Publish on docker hub
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker push ${DOCKER_BUILD}
 
 branches:
   only:
