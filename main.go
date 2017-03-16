@@ -7,9 +7,9 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strconv"
-	"os/signal"
 	"syscall"
 )
 
@@ -70,10 +70,10 @@ func main() {
 
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 
-
 	// Exit if a corresponding signal is received
 	<-signalChan
 
+	//  TODO: Stop http Server
 	log.Info("We're done. Bye bye.")
 	os.Exit(0)
 }
@@ -82,7 +82,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	log.Info("Received request")
 
-	tariffBoard := Board{}
+	board := Board{}
 
 	// @trello Board Lists
 	lists, err := trelloBoard.Lists()
@@ -94,7 +94,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// TODO: make slice dynamic
 	// Get first 3 lists
 	for _, list := range lists[1:4] {
-		tariffBoard.Lists = append(tariffBoard.Lists, list)
+		board.Lists = append(board.Lists, list)
 	}
 
 	templatePath := filepath.Join("tmpl", "board.html")
@@ -104,7 +104,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed parsing template"))
 	}
-	err = tmpl.Execute(w, tariffBoard)
+	err = tmpl.Execute(w, board)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed applying template"))
