@@ -29,6 +29,9 @@ var (
 
 	trelloClient *trello.Client
 	trelloBoard  *trello.Board
+
+	trelloStartColumn int
+	trelloStopColumn int
 )
 
 func main() {
@@ -48,6 +51,14 @@ func main() {
 	trelloAppKey = os.Getenv("TRELLO_APP_KEY")
 	trelloToken = os.Getenv("TRELLO_TOKEN")
 	trelloBoardId = os.Getenv("TRELLO_BOARD_ID")
+	trelloStartColumn, err = strconv.Atoi(os.Getenv("TRELLO_START_COLUMN"))
+	if err != nil {
+		log.Fatal("Please provide a valid trello start column (e.g. 1)")
+	}
+	trelloStopColumn, err = strconv.Atoi(os.Getenv("TRELLO_STOP_COLUMN"))
+	if err != nil {
+		log.Fatal("Please provide a valid trello stop column (e.g. 3)")
+	}
 
 	// New Trello Client
 	trelloClient, err = trello.NewAuthClient(trelloAppKey, &trelloToken)
@@ -85,15 +96,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	board := Board{}
 
 	// @trello Board Lists
-	lists, err := trelloBoard.Lists()
+	allLists, err := trelloBoard.Lists()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed getting Lists for Trello board"))
 	}
 
-	// TODO: make slice dynamic
-	// Get first 3 lists
-	for _, list := range lists[1:4] {
+	for _, list := range allLists[trelloStartColumn:trelloStopColumn] {
 		board.Lists = append(board.Lists, list)
 	}
 
