@@ -51,6 +51,11 @@ func main() {
 	trelloAppKey = os.Getenv("TRELLO_APP_KEY")
 	trelloToken = os.Getenv("TRELLO_TOKEN")
 	trelloBoardId = os.Getenv("TRELLO_BOARD_ID")
+
+	if trelloAppKey == "" {
+		log.Fatal("Please provide trello credentials & board id")
+	}
+
 	trelloStartColumn, err = strconv.Atoi(os.Getenv("TRELLO_START_COLUMN"))
 	if err != nil {
 		log.Fatal("Please provide a valid trello start column (e.g. 1)")

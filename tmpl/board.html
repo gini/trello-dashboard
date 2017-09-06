@@ -32,7 +32,7 @@
 		ul li {
 			margin-bottom: 20px;
 			list-style-type: none;
-			font-size: 25px;
+			font-size: 22px;
 			font-weight: 300;
 		}
 
@@ -78,11 +78,15 @@
             vertical-align: middle;
             border-radius: 50%;
 		}
+
+        .labels {
+            font-size: 14px;
+            color: #ddd;
+        }
 	</style>
 </head>
 
 <body>
-
 
 <div id="contentBox">
 
@@ -91,7 +95,10 @@
         <h1>{{ .Name }}</h1>
         <ul>
             {{range .Cards}}
-            <li>{{range .Members}}<img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />{{end}} {{ .Name }}</li>
+            <li>{{ .Name }}<br />
+                {{range .Members}}<img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />{{end}}
+                <span class="labels">{{range .Labels}} #{{ .Name }} {{end}}</span>
+            </li>
             {{end}}
         </ul>
     </div>
