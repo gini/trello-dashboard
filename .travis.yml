@@ -24,10 +24,10 @@ before_install:
 
 script:
   - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
-  # prepare qemu
-  - 'if [ ${ARCH} = "arm" ]; then
-      docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    fi'
+#  # prepare qemu
+#  - 'if [ ${ARCH} = "arm" ]; then
+#      docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#    fi'
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
   # Publish on docker hub
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
