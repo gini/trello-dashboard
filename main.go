@@ -7,10 +7,9 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strconv"
-	"syscall"
+	"github.com/TV4/graceful"
 )
 
 type Board struct {
@@ -22,7 +21,11 @@ type List struct {
 	Cards []trello.Card
 }
 
+type Server struct{}
+
 var (
+	port int
+
 	trelloAppKey  string
 	trelloToken   string
 	trelloBoardId string
@@ -31,39 +34,31 @@ var (
 	trelloBoard  *trello.Board
 
 	trelloStartColumn int
-	trelloStopColumn int
+	trelloStopColumn  int
 )
 
-func main() {
+func init() {
+	var err error
 
 	// set log format
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 
-	// Install signal handler
-	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-
-	port, err := strconv.Atoi(os.Getenv("PORT"))
+	port, err = strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {
 		log.Fatal("Please provide a valid port number (e.g. 8080)")
 	}
 
 	trelloAppKey = os.Getenv("TRELLO_APP_KEY")
 	trelloToken = os.Getenv("TRELLO_TOKEN")
-	trelloBoardId = os.Getenv("TRELLO_BOARD_ID")
 
-	if trelloAppKey == "" {
-		log.Fatal("Please provide trello credentials & board id")
+	if trelloAppKey == "" || trelloToken == "" {
+		log.Fatal("Please provide trello credentials")
 	}
+}
 
-	trelloStartColumn, err = strconv.Atoi(os.Getenv("TRELLO_START_COLUMN"))
-	if err != nil {
-		log.Fatal("Please provide a valid trello start column (e.g. 1)")
-	}
-	trelloStopColumn, err = strconv.Atoi(os.Getenv("TRELLO_STOP_COLUMN"))
-	if err != nil {
-		log.Fatal("Please provide a valid trello stop column (e.g. 3)")
-	}
+func main() {
+
+	var err error
 
 	// New Trello Client
 	trelloClient, err = trello.NewAuthClient(trelloAppKey, &trelloToken)
@@ -72,31 +67,72 @@ func main() {
 		os.Exit(1)
 	}
 
-	trelloBoard, err = trelloClient.Board(trelloBoardId)
-	if err != nil {
-		log.Errorf("Could not get Trello board %s, err: %s", trelloBoardId, err)
-		os.Exit(1)
-	}
-
 	log.Info("Up & running...")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r)
+	graceful.LogListenAndServe(&http.Server{
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: &Server{},
 	})
-
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
-
-	// Exit if a corresponding signal is received
-	<-signalChan
-
-	//  TODO: Stop http Server
-	log.Info("We're done. Bye bye.")
-	os.Exit(0)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path == "/favicon.ico" {
+		return
+	}
+
+	var err error
 
 	log.Info("Received request")
+
+	trelloBoardId = r.URL.Query().Get("trelloBoardId")
+	if trelloBoardId == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("400 - Please provide a Trello Board ID"))
+		log.Error("Trello Board ID missing")
+		return
+
+	} else {
+		trelloBoard, err = trelloClient.Board(trelloBoardId)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - Could not get Trello board"))
+			log.Errorf("Could not get Trello board %s, err: %s", trelloBoardId, err)
+			return
+		}
+	}
+
+	startColumn := r.URL.Query().Get("trelloStartColumn")
+	if startColumn == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("400 - Please provide a trello start column (trelloStartColumn)"))
+		log.Error("Trello start column is missing")
+		return
+
+	} else {
+		trelloStartColumn, err = strconv.Atoi(startColumn)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - Please provide a valid trello start column (e.g. 1)"))
+			log.Error("No valid trello start column (e.g. 1) was set as get parameter")
+		}
+	}
+
+	stopColumn := r.URL.Query().Get("trelloStopColumn")
+	if stopColumn == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("400 - Please provide a trello stop column (trelloStopColumn)"))
+		log.Error("Trello stop column is missing")
+		return
+
+	} else {
+		trelloStopColumn, err = strconv.Atoi(stopColumn)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - Please provide a valid trello stop column (e.g. 3)"))
+			log.Error("No valid trello stop column (e.g. 3) was set as get parameter")
+		}
+	}
 
 	board := Board{}
 
