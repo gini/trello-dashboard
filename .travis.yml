@@ -6,10 +6,10 @@ env:
       OS=linux
       DOCKER_BUILD=gini/trello-dashboard:${VERSION}
       DOCKERFILE=Dockerfile.amd64
-    - ARCH=arm
-      OS=linux
-      DOCKER_BUILD=gini/trello-dashboard:rpi-${VERSION}
-      DOCKERFILE=Dockerfile.rpi
+#    - ARCH=arm
+#      OS=linux
+#      DOCKER_BUILD=gini/trello-dashboard:rpi-${VERSION}
+#      DOCKERFILE=Dockerfile.rpi
 
 sudo: required
 
@@ -24,6 +24,7 @@ before_install:
 
 script:
   - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  - docker run --rm --reset
 #  # prepare qemu
 #  - 'if [ ${ARCH} = "arm" ]; then
 #      docker run --rm --privileged multiarch/qemu-user-static:register --reset
