@@ -51,9 +51,8 @@
 
 		.column {
 			display: table-cell;
-			width: 33.33%;
+			width: calc(100% / {{ .Columns }});
             border-right: 2px solid #009edc;
-
 		}
 
 		.column h1,

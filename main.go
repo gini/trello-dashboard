@@ -14,6 +14,7 @@ import (
 
 type Board struct {
 	Lists []trello.List
+	Columns int
 }
 
 type List struct {
@@ -54,6 +55,7 @@ func init() {
 	if trelloAppKey == "" || trelloToken == "" {
 		log.Fatal("Please provide trello credentials")
 	}
+
 }
 
 func main() {
@@ -115,6 +117,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("400 - Please provide a valid trello start column (e.g. 1)"))
 			log.Error("No valid trello start column (e.g. 1) was set as get parameter")
+			return
 		}
 	}
 
@@ -131,16 +134,20 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("400 - Please provide a valid trello stop column (e.g. 3)"))
 			log.Error("No valid trello stop column (e.g. 3) was set as get parameter")
+			return
 		}
 	}
 
 	board := Board{}
+
+	board.Columns = trelloStopColumn - trelloStartColumn
 
 	// @trello Board Lists
 	allLists, err := trelloBoard.Lists()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed getting Lists for Trello board"))
+		return
 	}
 
 	for _, list := range allLists[trelloStartColumn:trelloStopColumn] {
@@ -153,10 +160,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed parsing template"))
+		return
 	}
 	err = tmpl.Execute(w, board)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Failed applying template"))
+		return
 	}
 }
