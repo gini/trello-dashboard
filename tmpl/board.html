@@ -3,8 +3,8 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<style>
 		@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
 		html,
 		body {
@@ -16,18 +16,18 @@
 			padding: 0;
 			font-family: 'Source Sans Pro', sans-serif!important;
 			color: white;
-        }
+		}
 
 		h1 {
 			padding-top: 0.5em;
 			min-height: 60px;
 			font-size: 32px;
-    		font-weight: 350;
+			font-weight: 350;
 		}
 
 		h4 {
-        	font-size: 20px;
-        	font-weight: 350;
+			font-size: 20px;
+			font-weight: 350;
 		}
 
 		ul {
@@ -80,59 +80,55 @@
     		vertical-align: middle;
     		background-color: transparent;
         }
-        .card {
-        	background-color: transparent;
-        }
-        .card-body {
-        	background-color: transparent;
-        }
-        .card-title {
-        	color: #ddd;
-        	background-color: transparent;
-        }
+		.card {
+			background-color: transparent;
+		}
+		.card-body {
+			background-color: transparent;
+		}
+		.card-title {
+			color: #ddd;
+			background-color: transparent;
+		}
 	</style>
-
 </head>
 
 <body>
-
 <div id="contentBox">
-    {{range $index, $value := .Lists}}
-    <div id="column{{$index}}" class="column">
-    	<div class="card text-center">
-		  <div class="card-block">
-		    <h1 class="card-title">{{ .Name }}</h1>
-		  </div>
+	{{range $index, $value := .Lists}}
+	<div id="column{{$index}}" class="column">
+		<div class="card text-center">
+			<div class="card-block">
+				<h1 class="card-title">{{ .Name }}</h1>
+			</div>
 		</div>
-        {{range .Cards}}
-        <div class="card mb-1 ml-2 mr-2 pt-1 pb-1 shadow">
-        	<div class="card-body mt-0 mb-0 pt-1 pb-1">
-        		<h4 class="card-title mt-0 mb-0 pt-1 pb-1">{{ .Name }}</h4>
-        		<div class="row">
-            		<div class="col-md-auto">
-            			{{range .Members}}
-            			<img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />
-            			{{end}}
-            		</div>
-            		<div class="col-md-auto">
-            			{{range .Labels}} 
-            				{{if .Color}} 
-            				<span class="badge badge-pill labels"> {{ .Name }} </span>
-            				{{end}} 
-            			{{end}}
-            		
-            			{{if .Badges.CheckItems }} 
-            				<span class="badge badge-pill labels">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
+		{{range .Cards}}
+		<div class="card mb-1 ml-2 mr-2 pt-1 pb-1 shadow">
+			<div class="card-body mt-0 mb-0 pt-1 pb-1">
+				<h4 class="card-title mt-0 mb-0 pt-1 pb-1">{{ .Name }}</h4>
+				<div class="row">
+					<div class="col-md-auto">
+						{{range .Members}}
+						<img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />
+						{{end}}
+					</div>
+					<div class="col-md-auto">
+						{{range .Labels}} 
+							{{if .Color}} 
+							<span class="badge badge-pill labels"> {{ .Name }} </span>
+							{{end}} 
+						{{end}}
+						{{if .Badges.CheckItems }} 
+							<span class="badge badge-pill labels">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
 						{{end}} 
-            		</div>
-        		</div>
-        	</div>
-    	</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		{{end}}
-    </div>
-    {{end}}
+	</div>
+	{{end}}
 </div>
-
 </body>
 
 </html>
