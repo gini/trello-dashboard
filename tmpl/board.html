@@ -68,6 +68,9 @@
 			vertical-align: middle;
 			background-color: transparent;
 		}
+		.header-card {
+			border: 0px;
+		}
 		.card {
 			background-color: transparent;
 		}
@@ -85,7 +88,7 @@
 <div id="contentBox">
 	{{range $index, $value := .Lists}}
 	<div id="column{{$index}}" class="column">
-		<div class="card text-center">
+		<div class="card text-center header-card">
 			<div class="card-block">
 				<h1 class="card-title">{{ .Name }}</h1>
 			</div>
