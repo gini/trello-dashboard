@@ -3,173 +3,122 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
-        html,
-        body {
-            height: 100%;
-        }
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+		html,
+		body {
+			height: 100%;
+		}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Source Sans Pro', sans-serif!important;
-            color: white;
-        }
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Source Sans Pro', sans-serif!important;
+			color: white;
+		}
 
-        h1 {
-            padding-top: 0.5em;
-            min-height: 120px;
-            font-size: 40px;
-            font-weight: 300;
-        }
+		h1 {
+			padding-top: 0.5em;
+			min-height: 60px;
+			font-size: 40px;
+			font-weight: 350;
+		}
 
-        h4 {
-            font-size: 22px;
-            font-weight: 300;
-        }
+		h4 {
+			font-size: 22px;
+			font-weight: 350;
+		}
 
-        #contentBox {
-            display: table;
-            width: 100%;
-            height: 100%;
-            table-layout: fixed;
-            background: #005cad; /* Old browsers */
-            /*background: -moz-linear-gradient(top, #005cad 0%, #009edc 99%); !* FF3.6-15 *!*/
-            /*background: -webkit-linear-gradient(top, #005cad 0%,#009edc 99%); !* Chrome10-25,Safari5.1-6 *!*/
-            /*background: linear-gradient(to bottom, #005cad 0%,#009edc 99%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
-            /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005cad', endColorstr='#009edc',GradientType=0 ); !* IE6-9 *!*/
+		#contentBox {
+			display: table;
+			width: 100%;
+			height: 100%;
+			table-layout: fixed;
+			background: #009edc; /* Old browsers */
+			background: -moz-linear-gradient(top, #005cad 0%, #009edc 99%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, #005cad 0%,#009edc 99%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, #005cad 0%,#009edc 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005cad', endColorstr='#009edc',GradientType=0 ); /* IE6-9 */
 
-        <!--background-color: #009edf;-->
-        }
+			<!--background-color: #009edf;-->
+		}
 
-        .column {
-            display: table-cell;
-            border-right: 2px solid #009edc;
-        }
+		.column {
+			display: table-cell;
+			border-right: 2px solid #009edc;
+		}
 
-        .column:last-child {
-            border: 0;
-        }
+		.shadow {
+			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.09);
+		}
 
-        .header-card {
-            border: 0px;
-        }
-        .card {
-            background-color: transparent;
-        }
-        .card-body {
-            background-color: transparent;
-        }
-        .card-title {
-            color: #fff;
-            background-color: transparent;
-        }
-        
-        .shadow {
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.09)
-        }
+		.avatar {
+			height: 30px;
+			margin-right: 2px;
+			vertical-align: middle;
+			border-radius: 50%;
+		}
 
-        .avatar {
-            height: 30px;
-            margin-right: 2px;
-            vertical-align: middle;
-            border-radius: 50%;
-        }
-
-        .labels {
-            font-size: 10px;
-            font-weight: bold;
-            color: #fff;
-            border: 1px solid #fff;
-            vertical-align: middle;
-        }
-
-
-        .label-green {
-            background-color: #61BD4F
-        }
-
-        .label-yellow {
-            background-color: #F2D600
-        }
-
-        .label-orange {
-            background-color: #FFAB4A
-        }
-
-        .label-red {
-            background-color: #EB5A46
-        }
-
-        .label-purple {
-            background-color: #C377E0
-        }
-
-        .label-blue {
-            background-color: #0079BF
-        }
-
-        .label-pink {
-            background-color: #FF80CE
-        }
-
-        .label-sky {
-            background-color: #00C2E0
-        }
-
-        .label-lime {
-            background-color: #51E898
-        }
-
-        .label-black {
-            background-color: #4d4d4d
-        }
-
-        .checkitem {
-            background-color: #fff;
-            color: #005cad;
-        }
-
-    </style>
+		.labels {
+			font-size: 10px;
+			font-weight: normal;
+			color: #ddd;
+			border: 1px solid #428bca;
+			vertical-align: middle;
+			background-color: transparent;
+		}
+		.header-card {
+			border: 0px;
+		}
+		.card {
+			background-color: transparent;
+		}
+		.card-body {
+			background-color: transparent;
+		}
+		.card-title {
+			color: #ddd;
+			background-color: transparent;
+		}
+	</style>
 </head>
 
 <body>
 <div id="contentBox">
-    {{range $index, $value := .Lists}}
-    <div id="column{{$index}}" class="column">
-        <div class="card text-center header-card">
-            <div class="card-block">
-                <h1 class="card-title">{{ .Name }}</h1>
-            </div>
-        </div>
-        {{range .Cards}}
-        <div class="card mb-1 ml-2 mr-2 pt-1 pb-1 shadow">
-            <div class="card-body mt-0 mb-0 pt-1 pb-1">
-                <h4 class="card-title mt-0 mb-0 pt-1 pb-1">{{ .Name }}</h4>
-                <div class="row">
-                    <div class="col-md-auto">
-                        {{range .Members}}
-                        <img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />
-                        {{end}}
-                    </div>
-                    <div class="col-md-auto">
-                        {{range .Labels}}
-                        {{if .Color}}
-                        <span class="badge badge-pill labels label-{{ .Color}}"> {{ .Name }} </span>
-                        {{end}}
-                        {{end}}
-                        {{if .Badges.CheckItems }}
-                        <span class="badge badge-pill labels checkitem">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
-                        {{end}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{end}}
-    </div>
-    {{end}}
+	{{range $index, $value := .Lists}}
+	<div id="column{{$index}}" class="column">
+		<div class="card text-center header-card">
+			<div class="card-block">
+				<h1 class="card-title">{{ .Name }}</h1>
+			</div>
+		</div>
+		{{range .Cards}}
+		<div class="card mb-1 ml-2 mr-2 pt-1 pb-1 shadow">
+			<div class="card-body mt-0 mb-0 pt-1 pb-1">
+				<h4 class="card-title mt-0 mb-0 pt-1 pb-1">{{ .Name }}</h4>
+				<div class="row">
+					<div class="col-md-auto">
+						{{range .Members}}
+						<img class="avatar" src="http://trello-avatars.s3.amazonaws.com/{{ .AvatarHash}}/50.png" />
+						{{end}}
+					</div>
+					<div class="col-md-auto">
+						{{range .Labels}} 
+							{{if .Color}} 
+							<span class="badge badge-pill labels"> {{ .Name }} </span>
+							{{end}} 
+						{{end}}
+						{{if .Badges.CheckItems }} 
+							<span class="badge badge-pill labels">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
+						{{end}} 
+					</div>
+				</div>
+			</div>
+		</div>
+		{{end}}
+	</div>
+	{{end}}
 </div>
 </body>
 
