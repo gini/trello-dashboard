@@ -20,14 +20,14 @@
 
 		h1 {
 			padding-top: 0.5em;
-			min-height: 60px;
+			min-height: 120px;
 			font-size: 40px;
-			font-weight: 350;
+			font-weight: 300;
 		}
 
 		h4 {
 			font-size: 22px;
-			font-weight: 350;
+			font-weight: 300;
 		}
 
 		#contentBox {
@@ -35,13 +35,13 @@
 			width: 100%;
 			height: 100%;
 			table-layout: fixed;
-			background: #009edc; /* Old browsers */
-			background: -moz-linear-gradient(top, #005cad 0%, #009edc 99%); /* FF3.6-15 */
-			background: -webkit-linear-gradient(top, #005cad 0%,#009edc 99%); /* Chrome10-25,Safari5.1-6 */
-			background: linear-gradient(to bottom, #005cad 0%,#009edc 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005cad', endColorstr='#009edc',GradientType=0 ); /* IE6-9 */
+			background: #005cad; /* Old browsers */
+			/*background: -moz-linear-gradient(top, #005cad 0%, #009edc 99%); !* FF3.6-15 *!*/
+			/*background: -webkit-linear-gradient(top, #005cad 0%,#009edc 99%); !* Chrome10-25,Safari5.1-6 *!*/
+			/*background: linear-gradient(to bottom, #005cad 0%,#009edc 99%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+			/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005cad', endColorstr='#009edc',GradientType=0 ); !* IE6-9 *!*/
 
-			<!--background-color: #009edf;-->
+		<!--background-color: #009edf;-->
 		}
 
 		.column {
@@ -49,8 +49,26 @@
 			border-right: 2px solid #009edc;
 		}
 
+		.column:last-child {
+			border: 0;
+		}
+
+		.header-card {
+			border: 0px;
+		}
+		.card {
+			background-color: transparent;
+		}
+		.card-body {
+			background-color: transparent;
+		}
+		.card-title {
+			color: #fff;
+			background-color: transparent;
+		}
+
 		.shadow {
-			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.09);
+			box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.09)
 		}
 
 		.avatar {
@@ -62,25 +80,58 @@
 
 		.labels {
 			font-size: 10px;
-			font-weight: normal;
-			color: #ddd;
-			border: 1px solid #428bca;
+			font-weight: bold;
+			color: #fff;
+			border: 1px solid #fff;
 			vertical-align: middle;
-			background-color: transparent;
 		}
-		.header-card {
-			border: 0px;
+
+
+		.label-green {
+			background-color: #61BD4F
 		}
-		.card {
-			background-color: transparent;
+
+		.label-yellow {
+			background-color: #F2D600
 		}
-		.card-body {
-			background-color: transparent;
+
+		.label-orange {
+			background-color: #FFAB4A
 		}
-		.card-title {
-			color: #ddd;
-			background-color: transparent;
+
+		.label-red {
+			background-color: #EB5A46
 		}
+
+		.label-purple {
+			background-color: #C377E0
+		}
+
+		.label-blue {
+			background-color: #0079BF
+		}
+
+		.label-pink {
+			background-color: #FF80CE
+		}
+
+		.label-sky {
+			background-color: #00C2E0
+		}
+
+		.label-lime {
+			background-color: #51E898
+		}
+
+		.label-black {
+			background-color: #4d4d4d
+		}
+
+		.checkitem {
+			background-color: #fff;
+			color: #005cad;
+		}
+
 	</style>
 </head>
 
@@ -104,14 +155,14 @@
 						{{end}}
 					</div>
 					<div class="col-md-auto">
-						{{range .Labels}} 
-							{{if .Color}} 
-							<span class="badge badge-pill labels"> {{ .Name }} </span>
-							{{end}} 
+						{{range .Labels}}
+						{{if .Color}}
+						<span class="badge badge-pill labels label-{{ .Color}}"> {{ .Name }} </span>
 						{{end}}
-						{{if .Badges.CheckItems }} 
-							<span class="badge badge-pill labels">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
-						{{end}} 
+						{{end}}
+						{{if .Badges.CheckItems }}
+						<span class="badge badge-pill labels checkitem">{{ .Badges.CheckItemsChecked}} / {{ .Badges.CheckItems}}</span>
+						{{end}}
 					</div>
 				</div>
 			</div>
