@@ -21,10 +21,11 @@ language: go
 before_install:
   - go get github.com/Sirupsen/logrus
   - go get github.com/VojtechVitek/go-trello
+  - go get github.com/TV4/graceful
 
 script:
   - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
-  - docker run --rm --reset
+#  - docker run --rm --reset
 #  # prepare qemu
 #  - 'if [ ${ARCH} = "arm" ]; then
 #      docker run --rm --privileged multiarch/qemu-user-static:register --reset
