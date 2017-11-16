@@ -2,7 +2,7 @@ FROM alpine
 MAINTAINER Holger Teske <h.teske@gini.net>
 
 RUN apk add --no-cache \
-      ca-certificates \
+      bash ca-certificates \
     && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /app && chmod +x /app
