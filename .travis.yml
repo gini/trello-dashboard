@@ -24,7 +24,7 @@ before_install:
   - go get github.com/TV4/graceful
 
 script:
-  - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i -a -ldflags '-extldflags "-static"' .
 #  - docker run --rm --reset
 #  # prepare qemu
 #  - 'if [ ${ARCH} = "arm" ]; then
