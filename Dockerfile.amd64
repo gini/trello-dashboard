@@ -2,16 +2,15 @@ FROM alpine
 MAINTAINER Holger Teske <h.teske@gini.net>
 
 RUN apk add --no-cache \
-      ca-certificates \
+       ca-certificates \
     && rm -rf /var/cache/apk/*
 
 COPY trello-dashboard_linux-amd64 /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
-WORKDIR /app
 
 RUN adduser -u 2224 -s /sbin/nologin -D -H trello
 USER trello
 
-ENTRYPOINT ["/app/trello-dashboard"]
+WORKDIR /app
 
-CMD []
+ENTRYPOINT ["./trello-dashboard"]
