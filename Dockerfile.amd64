@@ -5,11 +5,14 @@ RUN apk add --no-cache \
       ca-certificates \
     && rm -rf /var/cache/apk/*
 
+RUN mkdir -p /app && chmod +x /app
 COPY trello-dashboard_linux-amd64 /app/trello-dashboard
+RUN chmod +x /app/trello-dashboard
 COPY tmpl/board.html /app/tmpl/
-WORKDIR /app
 
 RUN adduser -u 2224 -s /sbin/nologin -D -H trello
 USER trello
+
+WORKDIR /app
 
 ENTRYPOINT ["./trello-dashboard"]
