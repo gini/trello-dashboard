@@ -31,6 +31,7 @@ script:
 #      docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #    fi'
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
+  - if [[ "$(docker run ${DOCKER_BUILD} 2>&1)" == *"port number"* ]] ; then echo "Binary OK!" && exit 0 ; else echo "Binary not OK!" && exit -1 ; fi 
   # Publish on docker hub
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker push ${DOCKER_BUILD}
