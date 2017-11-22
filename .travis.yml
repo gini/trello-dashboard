@@ -17,6 +17,8 @@ services:
   - docker
 
 language: go
+go:
+  - 1.9.x
 
 before_install:
   - go get github.com/Sirupsen/logrus
@@ -24,16 +26,22 @@ before_install:
   - go get github.com/TV4/graceful
 
 script:
-  - GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i .
+  - CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH go build -v -o "trello-dashboard_$OS-$ARCH" -i -a .
 #  - docker run --rm --reset
 #  # prepare qemu
 #  - 'if [ ${ARCH} = "arm" ]; then
 #      docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #    fi'
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
-  # Publish on docker hub
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker push ${DOCKER_BUILD}
+  - echo "Testing the docker image built..."
+  - echo $(docker run ${DOCKER_BUILD} 2>&1)
+  - if [[ "$(docker run ${DOCKER_BUILD} 2>&1)" == *"port number"* ]] ; then echo "Binary OK!" && return 0 ; else echo "Binary not OK!" && return -1 ; fi 
+
+deploy:
+  - provider: script
+    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push ${DOCKER_BUILD}
+    on:
+      branch: master
 
 branches:
   only:
